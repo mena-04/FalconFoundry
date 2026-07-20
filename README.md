@@ -69,7 +69,7 @@ docs/
 │
 ├── schematic.pdf
 │
-├── integration_verification/
+└── integration_verification/
     ├── Tcl_console.txt
     ├── waveform.png
     ├── waveform_test1.png
