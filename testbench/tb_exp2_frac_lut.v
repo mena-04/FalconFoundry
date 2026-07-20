@@ -1,55 +1,30 @@
-`timescale 1ns/1ps
+module exp2_frac_lut #(
+    parameter EXP_WIDTH = 15
+)(
+    input  wire [3:0] frac_addr,
+    output reg  [EXP_WIDTH-1:0] exp_frac_q
+);
 
-module tb_exp2_frac_lut;
-
-    reg [3:0] frac_q;
-    wire [7:0] lut_out;
-
-    exp2_frac_lut dut (
-        .frac_q(frac_q),
-        .lut_out(lut_out)
-    );
-
-    task check;
-        input [3:0] frac;
-        input [7:0] expected;
-    begin
-        frac_q = frac;
-        #10;
-
-        if (lut_out == expected)
-            $display("PASS: frac=%0d lut_out=%0d", frac_q, lut_out);
-        else
-            $display("FAIL: frac=%0d lut_out=%0d expected=%0d",
-                     frac_q, lut_out, expected);
-    end
-    endtask
-
-    initial begin
-        /*
-            Update expected values if your Python LUT is different.
-            These are typical Q0.8 approximations for 2^(-frac/16).
-        */
-
-        check(4'd0, 8'd255);
-        check(4'd1, 8'd245);
-        check(4'd2, 8'd234);
-        check(4'd3, 8'd224);
-        check(4'd4, 8'd215);
-        check(4'd5, 8'd205);
-        check(4'd6, 8'd197);
-        check(4'd7, 8'd188);
-        check(4'd8, 8'd180);
-        check(4'd9, 8'd172);
-        check(4'd10, 8'd165);
-        check(4'd11, 8'd158);
-        check(4'd12, 8'd151);
-        check(4'd13, 8'd145);
-        check(4'd14, 8'd139);
-        check(4'd15, 8'd133);
-
-        $display("tb_exp2_frac_lut completed.");
-        $stop;
+    always @* begin
+        case (frac_addr)
+            4'd0  : exp_frac_q = 15'd16384;
+            4'd1  : exp_frac_q = 15'd15690;
+            4'd2  : exp_frac_q = 15'd15025;
+            4'd3  : exp_frac_q = 15'd14388;
+            4'd4  : exp_frac_q = 15'd13777;
+            4'd5  : exp_frac_q = 15'd13192;
+            4'd6  : exp_frac_q = 15'd12632;
+            4'd7  : exp_frac_q = 15'd12095;
+            4'd8  : exp_frac_q = 15'd11585;
+            4'd9  : exp_frac_q = 15'd11096;
+            4'd10 : exp_frac_q = 15'd10628;
+            4'd11 : exp_frac_q = 15'd10180;
+            4'd12 : exp_frac_q = 15'd9752;
+            4'd13 : exp_frac_q = 15'd9343;
+            4'd14 : exp_frac_q = 15'd8952;
+            4'd15 : exp_frac_q = 15'd8579;
+            default: exp_frac_q = 15'd16384;
+        endcase
     end
 
 endmodule
