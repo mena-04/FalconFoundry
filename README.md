@@ -70,16 +70,14 @@ docs/
 ├── schematic.pdf
 │
 ├── integration_verification/
-│   ├── Tcl_console.txt
-│   ├── waveform.png
-│   ├── waveform_test1.png
-│   ├── waveform_test2.png
-│   ├── waveform_test3.png
-│   ├── waveform_test4.png
-│   ├── waveform_test5.png
-│   └── waveform_test6.png
-│
-└── (additional documentation and verification results)
+    ├── Tcl_console.txt
+    ├── waveform.png
+    ├── waveform_test1.png
+    ├── waveform_test2.png
+    ├── waveform_test3.png
+    ├── waveform_test4.png
+    ├── waveform_test5.png
+    └── waveform_test6.png
 
 rtl/
 │
