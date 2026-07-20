@@ -1,0 +1,21 @@
+source tb_max_finder.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+PASS:                    increasing / max last max_q=8 expected=8
+PASS:                   decreasing / max first max_q=8 expected=8
+PASS:                             all negative max_q=-1 expected=-1
+PASS:                                all equal max_q=-3 expected=-3
+PASS:                       mixed / max middle max_q=7 expected=7
+PASS:                        duplicate maximum max_q=6 expected=6
+--------------------------------------------
+tb_max_finder completed: PASS=6 FAIL=0
+--------------------------------------------
+OVERALL RESULT: PASS
