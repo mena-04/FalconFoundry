@@ -120,7 +120,6 @@ PICO_Softmax.py
 FP_Softmax.ipynb
 FP_Softmax.py
 
-README.md
 ```
 
 ---
