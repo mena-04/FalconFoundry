@@ -81,7 +81,6 @@ docs/
 │   └── waveform_test6.png
 │
 └── memory_interface_controller_verification/
-    ├── .gitkeep
     ├── Tcl_console.txt
     ├── waveform_denominator_accumulator.png
     ├── waveform_exp_buffer.png
