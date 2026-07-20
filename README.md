@@ -69,16 +69,26 @@ docs/
 │
 ├── schematic.pdf
 │
-└── integration_verification/
+├── integration_verification/
+│   ├── Tcl_console.txt
+│   ├── tb_pico_softmax.wcfg
+│   ├── waveform.png
+│   ├── waveform_test1.png
+│   ├── waveform_test2.png
+│   ├── waveform_test3.png
+│   ├── waveform_test4.png
+│   ├── waveform_test5.png
+│   └── waveform_test6.png
+│
+└── memory_interface_controller_verification/
+    ├── .gitkeep
     ├── Tcl_console.txt
-    ├── tb_pico_softmax.wcfg
-    ├── waveform.png
-    ├── waveform_test1.png
-    ├── waveform_test2.png
-    ├── waveform_test3.png
-    ├── waveform_test4.png
-    ├── waveform_test5.png
-    └── waveform_test6.png
+    ├── waveform_denominator_accumulator.png
+    ├── waveform_exp_buffer.png
+    ├── waveform_input_vector_buffer.png
+    ├── waveform_output_buffer.png
+    ├── waveform_pico_softmax_bus_if.png
+    └── waveform_pico_softmax_controller.png
 
 rtl/
 │
