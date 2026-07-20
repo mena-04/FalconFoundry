@@ -1,0 +1,341 @@
+source tb_input_vector_buffer.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Starting input_vector_buffer simulation...
+
+TEST 1: Reset should clear all memory locations
+PASS : addr=0 read_data=0
+PASS : addr=1 read_data=0
+PASS : addr=2 read_data=0
+PASS : addr=3 read_data=0
+PASS : addr=4 read_data=0
+PASS : addr=5 read_data=0
+PASS : addr=6 read_data=0
+PASS : addr=7 read_data=0
+
+TEST 2: Write values to all addresses
+
+TEST 3: Read values back and check correctness
+PASS : addr=0 read_data=10
+PASS : addr=1 read_data=-5
+PASS : addr=2 read_data=20
+PASS : addr=3 read_data=-15
+PASS : addr=4 read_data=30
+PASS : addr=5 read_data=40
+PASS : addr=6 read_data=-25
+PASS : addr=7 read_data=7
+
+TEST 4: Overwrite address 3
+PASS : addr=3 read_data=99
+PASS : addr=2 read_data=20
+
+TEST 5: write_en = 0 should not change memory
+PASS : addr=4 read_data=30
+
+========================================
+ALL TESTS PASSED for input_vector_buffer
+========================================
+
+
+
+source tb_output_buffer.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Starting output_buffer simulation...
+
+TEST 1: Reset should clear all memory locations
+PASS : addr=0 read_data=0
+PASS : addr=1 read_data=0
+PASS : addr=2 read_data=0
+PASS : addr=3 read_data=0
+PASS : addr=4 read_data=0
+PASS : addr=5 read_data=0
+PASS : addr=6 read_data=0
+PASS : addr=7 read_data=0
+
+TEST 2: Write output probability values
+
+TEST 3: Read values back and check correctness
+PASS : addr=0 read_data=10
+PASS : addr=1 read_data=20
+PASS : addr=2 read_data=30
+PASS : addr=3 read_data=40
+PASS : addr=4 read_data=50
+PASS : addr=5 read_data=60
+PASS : addr=6 read_data=70
+PASS : addr=7 read_data=80
+
+TEST 4: Overwrite address 5
+PASS : addr=5 read_data=123
+PASS : addr=4 read_data=50
+
+TEST 5: write_en = 0 should not change memory
+PASS : addr=2 read_data=30
+
+TEST 6: clear should erase all memory locations
+PASS : addr=0 read_data=0
+PASS : addr=1 read_data=0
+PASS : addr=2 read_data=0
+PASS : addr=3 read_data=0
+PASS : addr=4 read_data=0
+PASS : addr=5 read_data=0
+PASS : addr=6 read_data=0
+PASS : addr=7 read_data=0
+
+TEST 7: clear should have priority over write_en
+PASS : addr=1 read_data=55
+PASS : addr=1 read_data=0
+
+================================
+ALL TESTS PASSED for output_buffer
+================================
+
+
+
+source tb_exp_buffer.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Starting exp_buffer simulation...
+
+TEST 1: Reset should clear all memory locations
+PASS : addr=0 read_data=0
+PASS : addr=1 read_data=0
+PASS : addr=2 read_data=0
+PASS : addr=3 read_data=0
+PASS : addr=4 read_data=0
+PASS : addr=5 read_data=0
+PASS : addr=6 read_data=0
+PASS : addr=7 read_data=0
+
+TEST 2: Write exponent values
+
+TEST 3: Read values back and check correctness
+PASS : addr=0 read_data=100
+PASS : addr=1 read_data=250
+PASS : addr=2 read_data=500
+PASS : addr=3 read_data=1000
+PASS : addr=4 read_data=2000
+PASS : addr=5 read_data=4000
+PASS : addr=6 read_data=8000
+PASS : addr=7 read_data=16000
+
+TEST 4: Overwrite address 6
+PASS : addr=6 read_data=12345
+PASS : addr=5 read_data=4000
+
+TEST 5: write_en = 0 should not change memory
+PASS : addr=2 read_data=500
+
+TEST 6: clear should erase all memory locations
+PASS : addr=0 read_data=0
+PASS : addr=1 read_data=0
+PASS : addr=2 read_data=0
+PASS : addr=3 read_data=0
+PASS : addr=4 read_data=0
+PASS : addr=5 read_data=0
+PASS : addr=6 read_data=0
+PASS : addr=7 read_data=0
+
+TEST 7: clear should have priority over write_en
+PASS : addr=1 read_data=7777
+PASS : addr=1 read_data=0
+
+==============================
+ALL TESTS PASSED for exp_buffer
+==============================
+
+
+
+source tb_denominator_accumulator.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Starting denominator_accumulator simulation...
+
+TEST 1: Reset should clear den_q
+PASS : den_q=0
+
+TEST 2: Add one value
+PASS : den_q=100
+
+TEST 3: Add multiple values
+PASS : den_q=350
+PASS : den_q=850
+PASS : den_q=1850
+PASS : den_q=3850
+
+TEST 4: add_en = 0 should not change den_q
+PASS : den_q=3850
+
+TEST 5: clear should reset den_q to 0
+PASS : den_q=0
+
+TEST 6: Accumulator should work again after clear
+PASS : den_q=1234
+PASS : den_q=5555
+
+TEST 7: clear should have priority over add_en
+PASS : den_q=0
+
+TEST 8: Large sum test
+PASS : den_q=16000
+PASS : den_q=32000
+PASS : den_q=48000
+PASS : den_q=64000
+
+============================================
+ALL TESTS PASSED for denominator_accumulator
+============================================
+
+
+
+source tb_pico_softmax_bus_if.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Starting pico_softmax_bus_if simulation...
+
+TEST 1: Reset should clear indexes and pulses
+PASS : reset values are correct
+
+TEST 2: Host writes 8 input values
+PASS : write value=10 input_index=1 input_data=10
+PASS : write value=20 input_index=2 input_data=20
+PASS : write value=30 input_index=3 input_data=30
+PASS : write value=40 input_index=4 input_data=40
+PASS : write value=50 input_index=5 input_data=50
+PASS : write value=60 input_index=6 input_data=60
+PASS : write value=70 input_index=7 input_data=70
+PASS : write value=80 input_index=0 input_data=80
+
+TEST 3: input_valid should be a one-cycle pulse
+PASS : input_valid returned to 0
+
+TEST 4: Host reads 8 output values
+PASS : read output_index=1 data_bus=5
+PASS : read output_index=2 data_bus=15
+PASS : read output_index=3 data_bus=25
+PASS : read output_index=4 data_bus=35
+PASS : read output_index=5 data_bus=45
+PASS : read output_index=6 data_bus=55
+PASS : read output_index=7 data_bus=65
+PASS : read output_index=0 data_bus=75
+
+TEST 5: output_read_pulse should be a one-cycle pulse
+PASS : output_read_pulse returned to 0
+
+TEST 6: wr_en and rd_en both high should do nothing
+PASS : both-high case does nothing
+
+=======================================
+ALL TESTS PASSED for pico_softmax_bus_if
+=======================================
+
+
+
+source tb_pico_softmax_controller.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Starting pico_softmax_controller simulation...
+
+TEST 1: Reset
+PASS : busy is 0 after reset
+PASS : done is 0 after reset
+PASS : work_index is 0 after reset
+
+TEST 2: Start controller
+PASS : controller becomes busy after start
+PASS : done is 0 while controller is busy
+
+TEST 3: Load 8 inputs
+PASS : input_write_en is high while input_valid is high
+PASS : input_write_en is high while input_valid is high
+PASS : input_write_en is high while input_valid is high
+PASS : input_write_en is high while input_valid is high
+PASS : input_write_en is high while input_valid is high
+PASS : input_write_en is high while input_valid is high
+PASS : input_write_en is high while input_valid is high
+PASS : input_write_en is high while input_valid is high
+PASS : max_start pulse observed
+
+TEST 4: Complete max finder
+PASS : exp_clear pulse observed
+PASS : den_clear pulse observed
+
+TEST 5: Exponent accumulation
+PASS : exp_write_en observed during EXP_ACCUM
+PASS : den_add_en observed during EXP_ACCUM
+
+TEST 6: Division and output storage loop
+PASS : div_start pulse observed
+PASS : output_write_en observed after div_done
+PASS : div_start pulse observed
+PASS : output_write_en observed after div_done
+PASS : div_start pulse observed
+PASS : output_write_en observed after div_done
+PASS : div_start pulse observed
+PASS : output_write_en observed after div_done
+PASS : div_start pulse observed
+PASS : output_write_en observed after div_done
+PASS : div_start pulse observed
+PASS : output_write_en observed after div_done
+PASS : div_start pulse observed
+PASS : output_write_en observed after div_done
+PASS : div_start pulse observed
+PASS : output_write_en observed after div_done
+PASS : done is high after all outputs are stored
+PASS : busy is low when done is high
+
+TEST 7: Read 8 outputs
+PASS : done returns to 0 after all outputs are read
+PASS : busy is low after returning to idle
+
+==========================================
+ALL TESTS PASSED for pico_softmax_controller
+==========================================
