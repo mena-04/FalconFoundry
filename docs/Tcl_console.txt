@@ -1,0 +1,289 @@
+run all
+tb_pico_softmax started at simulation time 0
+
+============================================================
+RUNNING TEST 1
+============================================================
+Step 1: Reset DUT
+Step 2: Begin transaction
+Step 3: Load input vector
+Loading input vector...
+Input[0] = 16, raw byte = 0x10
+Input[1] = 16, raw byte = 0x10
+Input[2] = 16, raw byte = 0x10
+Input[3] = 16, raw byte = 0x10
+Input[4] = 16, raw byte = 0x10
+Input[5] = 16, raw byte = 0x10
+Input[6] = 16, raw byte = 0x10
+Input[7] = 16, raw byte = 0x10
+Step 4: Wait for completion
+Waiting for done...
+Computation completed in 116 wait cycles.
+Step 5: Read output vector
+Reading output vector...
+Output[0] = 32, raw byte = 0x20
+Output[1] = 32, raw byte = 0x20
+Output[2] = 32, raw byte = 0x20
+Output[3] = 32, raw byte = 0x20
+Output[4] = 32, raw byte = 0x20
+Output[5] = 32, raw byte = 0x20
+Output[6] = 32, raw byte = 0x20
+Output[7] = 32, raw byte = 0x20
+Step 6: Compare outputs
+
+------------------------------------------------------------
+ Index | Input(raw) | Expected | Actual | Abs Error | Status
+------------------------------------------------------------
+   0   |      16    |    32    |   32   |     0     | PASS
+   1   |      16    |    32    |   32   |     0     | PASS
+   2   |      16    |    32    |   32   |     0     | PASS
+   3   |      16    |    32    |   32   |     0     | PASS
+   4   |      16    |    32    |   32   |     0     | PASS
+   5   |      16    |    32    |   32   |     0     | PASS
+   6   |      16    |    32    |   32   |     0     | PASS
+   7   |      16    |    32    |   32   |     0     | PASS
+------------------------------------------------------------
+max_q=16 den_q=131072 maximum output error=0 LSB
+TEST 1 PASSED
+
+
+============================================================
+RUNNING TEST 2
+============================================================
+Step 1: Reset DUT
+Step 2: Begin transaction
+Step 3: Load input vector
+Loading input vector...
+Input[0] = 16, raw byte = 0x10
+Input[1] = 32, raw byte = 0x20
+Input[2] = 48, raw byte = 0x30
+Input[3] = 64, raw byte = 0x40
+Input[4] = 80, raw byte = 0x50
+Input[5] = 96, raw byte = 0x60
+Input[6] = 112, raw byte = 0x70
+Input[7] = 127, raw byte = 0x7f
+Step 4: Wait for completion
+Waiting for done...
+Computation completed in 116 wait cycles.
+Step 5: Read output vector
+Reading output vector...
+Output[0] = 1, raw byte = 0x01
+Output[1] = 2, raw byte = 0x02
+Output[2] = 4, raw byte = 0x04
+Output[3] = 8, raw byte = 0x08
+Output[4] = 16, raw byte = 0x10
+Output[5] = 32, raw byte = 0x20
+Output[6] = 65, raw byte = 0x41
+Output[7] = 125, raw byte = 0x7d
+Step 6: Compare outputs
+
+------------------------------------------------------------
+ Index | Input(raw) | Expected | Actual | Abs Error | Status
+------------------------------------------------------------
+   0   |      16    |     1    |    1   |     0     | PASS
+   1   |      32    |     2    |    2   |     0     | PASS
+   2   |      48    |     4    |    4   |     0     | PASS
+   3   |      64    |     8    |    8   |     0     | PASS
+   4   |      80    |    16    |   16   |     0     | PASS
+   5   |      96    |    32    |   32   |     0     | PASS
+   6   |     112    |    65    |   65   |     0     | PASS
+   7   |     127    |   125    |  125   |     0     | PASS
+------------------------------------------------------------
+max_q=127 den_q=33406 maximum output error=0 LSB
+TEST 2 PASSED
+
+
+============================================================
+RUNNING TEST 3
+============================================================
+Step 1: Reset DUT
+Step 2: Begin transaction
+Step 3: Load input vector
+Loading input vector...
+Input[0] = 127, raw byte = 0x7f
+Input[1] = 112, raw byte = 0x70
+Input[2] = 96, raw byte = 0x60
+Input[3] = 80, raw byte = 0x50
+Input[4] = 64, raw byte = 0x40
+Input[5] = 48, raw byte = 0x30
+Input[6] = 32, raw byte = 0x20
+Input[7] = 16, raw byte = 0x10
+Step 4: Wait for completion
+Waiting for done...
+Computation completed in 116 wait cycles.
+Step 5: Read output vector
+Reading output vector...
+Output[0] = 125, raw byte = 0x7d
+Output[1] = 65, raw byte = 0x41
+Output[2] = 32, raw byte = 0x20
+Output[3] = 16, raw byte = 0x10
+Output[4] = 8, raw byte = 0x08
+Output[5] = 4, raw byte = 0x04
+Output[6] = 2, raw byte = 0x02
+Output[7] = 1, raw byte = 0x01
+Step 6: Compare outputs
+
+------------------------------------------------------------
+ Index | Input(raw) | Expected | Actual | Abs Error | Status
+------------------------------------------------------------
+   0   |     127    |   125    |  125   |     0     | PASS
+   1   |     112    |    65    |   65   |     0     | PASS
+   2   |      96    |    32    |   32   |     0     | PASS
+   3   |      80    |    16    |   16   |     0     | PASS
+   4   |      64    |     8    |    8   |     0     | PASS
+   5   |      48    |     4    |    4   |     0     | PASS
+   6   |      32    |     2    |    2   |     0     | PASS
+   7   |      16    |     1    |    1   |     0     | PASS
+------------------------------------------------------------
+max_q=127 den_q=33406 maximum output error=0 LSB
+TEST 3 PASSED
+
+
+============================================================
+RUNNING TEST 4
+============================================================
+Step 1: Reset DUT
+Step 2: Begin transaction
+Step 3: Load input vector
+Loading input vector...
+Input[0] = -128, raw byte = 0x80
+Input[1] = -112, raw byte = 0x90
+Input[2] = -96, raw byte = 0xa0
+Input[3] = -80, raw byte = 0xb0
+Input[4] = -64, raw byte = 0xc0
+Input[5] = -48, raw byte = 0xd0
+Input[6] = -32, raw byte = 0xe0
+Input[7] = -16, raw byte = 0xf0
+Step 4: Wait for completion
+Waiting for done...
+Computation completed in 116 wait cycles.
+Step 5: Read output vector
+Reading output vector...
+Output[0] = 1, raw byte = 0x01
+Output[1] = 2, raw byte = 0x02
+Output[2] = 4, raw byte = 0x04
+Output[3] = 8, raw byte = 0x08
+Output[4] = 16, raw byte = 0x10
+Output[5] = 32, raw byte = 0x20
+Output[6] = 64, raw byte = 0x40
+Output[7] = 128, raw byte = 0x80
+Step 6: Compare outputs
+
+------------------------------------------------------------
+ Index | Input(raw) | Expected | Actual | Abs Error | Status
+------------------------------------------------------------
+   0   |    -128    |     1    |    1   |     0     | PASS
+   1   |    -112    |     2    |    2   |     0     | PASS
+   2   |     -96    |     4    |    4   |     0     | PASS
+   3   |     -80    |     8    |    8   |     0     | PASS
+   4   |     -64    |    16    |   16   |     0     | PASS
+   5   |     -48    |    32    |   32   |     0     | PASS
+   6   |     -32    |    64    |   64   |     0     | PASS
+   7   |     -16    |   128    |  128   |     0     | PASS
+------------------------------------------------------------
+max_q=-16 den_q=32640 maximum output error=0 LSB
+TEST 4 PASSED
+
+
+============================================================
+RUNNING TEST 5
+============================================================
+Step 1: Reset DUT
+Step 2: Begin transaction
+Step 3: Load input vector
+Loading input vector...
+Input[0] = 32, raw byte = 0x20
+Input[1] = -16, raw byte = 0xf0
+Input[2] = 112, raw byte = 0x70
+Input[3] = 0, raw byte = 0x00
+Input[4] = -64, raw byte = 0xc0
+Input[5] = 80, raw byte = 0x50
+Input[6] = 16, raw byte = 0x10
+Input[7] = -32, raw byte = 0xe0
+Step 4: Wait for completion
+Waiting for done...
+Computation completed in 116 wait cycles.
+Step 5: Read output vector
+Reading output vector...
+Output[0] = 6, raw byte = 0x06
+Output[1] = 0, raw byte = 0x00
+Output[2] = 195, raw byte = 0xc3
+Output[3] = 1, raw byte = 0x01
+Output[4] = 0, raw byte = 0x00
+Output[5] = 48, raw byte = 0x30
+Output[6] = 3, raw byte = 0x03
+Output[7] = 0, raw byte = 0x00
+Step 6: Compare outputs
+
+------------------------------------------------------------
+ Index | Input(raw) | Expected | Actual | Abs Error | Status
+------------------------------------------------------------
+   0   |      32    |     6    |    6   |     0     | PASS
+   1   |     -16    |     0    |    0   |     0     | PASS
+   2   |     112    |   195    |  195   |     0     | PASS
+   3   |       0    |     1    |    1   |     0     | PASS
+   4   |     -64    |     0    |    0   |     0     | PASS
+   5   |      80    |    48    |   48   |     0     | PASS
+   6   |      16    |     3    |    3   |     0     | PASS
+   7   |     -32    |     0    |    0   |     0     | PASS
+------------------------------------------------------------
+max_q=112 den_q=21480 maximum output error=0 LSB
+TEST 5 PASSED
+
+
+============================================================
+RUNNING TEST 6
+============================================================
+Step 1: Reset DUT
+Step 2: Begin transaction
+Step 3: Load input vector
+Loading input vector...
+Input[0] = 112, raw byte = 0x70
+Input[1] = 0, raw byte = 0x00
+Input[2] = 0, raw byte = 0x00
+Input[3] = 0, raw byte = 0x00
+Input[4] = 0, raw byte = 0x00
+Input[5] = 0, raw byte = 0x00
+Input[6] = 0, raw byte = 0x00
+Input[7] = 0, raw byte = 0x00
+Step 4: Wait for completion
+Waiting for done...
+Computation completed in 116 wait cycles.
+Step 5: Read output vector
+Reading output vector...
+Output[0] = 242, raw byte = 0xf2
+Output[1] = 1, raw byte = 0x01
+Output[2] = 1, raw byte = 0x01
+Output[3] = 1, raw byte = 0x01
+Output[4] = 1, raw byte = 0x01
+Output[5] = 1, raw byte = 0x01
+Output[6] = 1, raw byte = 0x01
+Output[7] = 1, raw byte = 0x01
+Step 6: Compare outputs
+
+------------------------------------------------------------
+ Index | Input(raw) | Expected | Actual | Abs Error | Status
+------------------------------------------------------------
+   0   |     112    |   242    |  242   |     0     | PASS
+   1   |       0    |     1    |    1   |     0     | PASS
+   2   |       0    |     1    |    1   |     0     | PASS
+   3   |       0    |     1    |    1   |     0     | PASS
+   4   |       0    |     1    |    1   |     0     | PASS
+   5   |       0    |     1    |    1   |     0     | PASS
+   6   |       0    |     1    |    1   |     0     | PASS
+   7   |       0    |     1    |    1   |     0     | PASS
+------------------------------------------------------------
+max_q=112 den_q=17280 maximum output error=0 LSB
+TEST 6 PASSED
+
+
+============================================================
+FINAL VERIFICATION SUMMARY
+============================================================
+Total tests : 6
+Passed      : 6
+Failed      : 0
+OVERALL RESULT: PASS
+============================================================
+
+$finish called at time : 9465 ns : File "C:/Users/jarir/Downloads/tb_pico_softmax.v" Line 730
