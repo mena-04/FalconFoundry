@@ -2,44 +2,72 @@
 
 module tb_exp2_shift_unit;
 
-    reg [7:0] lut_in;
-    reg [3:0] int_part;
-    wire [7:0] exp_out;
+    localparam EXP_WIDTH = 15;
 
-    exp2_shift_unit dut (
-        .lut_in(lut_in),
-        .int_part(int_part),
-        .exp_out(exp_out)
+    reg  [EXP_WIDTH-1:0] exp_frac_q;
+    reg  [3:0]           integer_part;
+    wire [EXP_WIDTH-1:0] exp_q;
+
+    integer pass_count;
+    integer fail_count;
+
+    exp2_shift_unit #(
+        .EXP_WIDTH(EXP_WIDTH)
+    ) dut (
+        .exp_frac_q (exp_frac_q),
+        .integer_part(integer_part),
+        .exp_q      (exp_q)
     );
 
-    task check;
-        input [7:0] lut_val;
-        input [3:0] shift_val;
-        input [7:0] expected;
-    begin
-        lut_in = lut_val;
-        int_part = shift_val;
-        #10;
+    task automatic check_shift;
+        input [EXP_WIDTH-1:0] frac_value;
+        input [3:0] shift_value;
+        input [EXP_WIDTH-1:0] expected;
+        begin
+            exp_frac_q  = frac_value;
+            integer_part = shift_value;
+            #10;
 
-        if (exp_out == expected)
-            $display("PASS: lut=%0d shift=%0d exp=%0d",
-                     lut_in, int_part, exp_out);
-        else
-            $display("FAIL: lut=%0d shift=%0d exp=%0d expected=%0d",
-                     lut_in, int_part, exp_out, expected);
-    end
+            if (exp_q === expected) begin
+                $display("PASS: exp_frac_q=%0d shift=%0d exp_q=%0d",
+                         exp_frac_q, integer_part, exp_q);
+                pass_count = pass_count + 1;
+            end
+            else begin
+                $display("FAIL: exp_frac_q=%0d shift=%0d exp_q=%0d expected=%0d",
+                         exp_frac_q, integer_part, exp_q, expected);
+                fail_count = fail_count + 1;
+            end
+        end
     endtask
 
     initial begin
-        check(8'd255, 4'd0, 8'd255);
-        check(8'd255, 4'd1, 8'd127);
-        check(8'd255, 4'd2, 8'd63);
-        check(8'd255, 4'd3, 8'd31);
-        check(8'd128, 4'd1, 8'd64);
-        check(8'd64,  4'd2, 8'd16);
+        pass_count   = 0;
+        fail_count   = 0;
+        exp_frac_q   = 0;
+        integer_part = 0;
 
-        $display("tb_exp2_shift_unit completed.");
-        $stop;
+        check_shift(15'd16384, 4'd0, 15'd16384);
+        check_shift(15'd16384, 4'd1, 15'd8192);
+        check_shift(15'd16384, 4'd2, 15'd4096);
+        check_shift(15'd16384, 4'd3, 15'd2048);
+        check_shift(15'd13777, 4'd1, 15'd6888);
+        check_shift(15'd11585, 4'd2, 15'd2896);
+        check_shift(15'd8579,  4'd4, 15'd536);
+        check_shift(15'd16384, 4'd14, 15'd1);
+        check_shift(15'd16384, 4'd15, 15'd0);
+
+        $display("--------------------------------------------");
+        $display("tb_exp2_shift_unit completed: PASS=%0d FAIL=%0d",
+                 pass_count, fail_count);
+        $display("--------------------------------------------");
+
+        if (fail_count == 0)
+            $display("OVERALL RESULT: PASS");
+        else
+            $display("OVERALL RESULT: FAIL");
+
+        $finish;
     end
 
 endmodule
