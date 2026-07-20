@@ -1,0 +1,130 @@
+source tb_max_finder.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+PASS:                    increasing / max last max_q=8 expected=8
+PASS:                   decreasing / max first max_q=8 expected=8
+PASS:                             all negative max_q=-1 expected=-1
+PASS:                                all equal max_q=-3 expected=-3
+PASS:                       mixed / max middle max_q=7 expected=7
+PASS:                        duplicate maximum max_q=6 expected=6
+--------------------------------------------
+tb_max_finder completed: PASS=6 FAIL=0
+--------------------------------------------
+OVERALL RESULT: PASS
+
+source tb_exp2_shift_unit.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+PASS: exp_frac_q=16384 shift=0 exp_q=16384
+PASS: exp_frac_q=16384 shift=1 exp_q=8192
+PASS: exp_frac_q=16384 shift=2 exp_q=4096
+PASS: exp_frac_q=16384 shift=3 exp_q=2048
+PASS: exp_frac_q=13777 shift=1 exp_q=6888
+PASS: exp_frac_q=11585 shift=2 exp_q=2896
+PASS: exp_frac_q=8579 shift=4 exp_q=536
+PASS: exp_frac_q=16384 shift=14 exp_q=1
+PASS: exp_frac_q=16384 shift=15 exp_q=0
+--------------------------------------------
+tb_exp2_shift_unit completed: PASS=9 FAIL=0
+--------------------------------------------
+OVERALL RESULT: PASS
+
+source tb_exp2_hybrid_unit.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+PASS: magnitude=0 integer=0 fraction=0 exp_q=16384
+PASS: magnitude=1 integer=0 fraction=1 exp_q=15690
+PASS: magnitude=4 integer=0 fraction=4 exp_q=13777
+PASS: magnitude=8 integer=0 fraction=8 exp_q=11585
+PASS: magnitude=15 integer=0 fraction=15 exp_q=8579
+PASS: magnitude=16 integer=1 fraction=0 exp_q=8192
+PASS: magnitude=20 integer=1 fraction=4 exp_q=6888
+PASS: magnitude=24 integer=1 fraction=8 exp_q=5792
+PASS: magnitude=32 integer=2 fraction=0 exp_q=4096
+PASS: magnitude=40 integer=2 fraction=8 exp_q=2896
+PASS: magnitude=48 integer=3 fraction=0 exp_q=2048
+PASS: magnitude=63 integer=3 fraction=15 exp_q=1072
+--------------------------------------------
+tb_exp2_hybrid_unit completed: PASS=12 FAIL=0
+--------------------------------------------
+OVERALL RESULT: PASS
+
+source tb_exp2_frac_lut.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+PASS: frac_addr=0 exp_frac_q=16384
+PASS: frac_addr=1 exp_frac_q=15690
+PASS: frac_addr=2 exp_frac_q=15025
+PASS: frac_addr=3 exp_frac_q=14388
+PASS: frac_addr=4 exp_frac_q=13777
+PASS: frac_addr=5 exp_frac_q=13192
+PASS: frac_addr=6 exp_frac_q=12632
+PASS: frac_addr=7 exp_frac_q=12095
+PASS: frac_addr=8 exp_frac_q=11585
+PASS: frac_addr=9 exp_frac_q=11096
+PASS: frac_addr=10 exp_frac_q=10628
+PASS: frac_addr=11 exp_frac_q=10180
+PASS: frac_addr=12 exp_frac_q=9752
+PASS: frac_addr=13 exp_frac_q=9343
+PASS: frac_addr=14 exp_frac_q=8952
+PASS: frac_addr=15 exp_frac_q=8579
+--------------------------------------------
+tb_exp2_frac_lut completed: PASS=16 FAIL=0
+--------------------------------------------
+OVERALL RESULT: PASS
+
+
+source tb_delta_unit.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+PASS: x=2 max=6 delta=-4 magnitude=4
+PASS: x=6 max=6 delta=0 magnitude=0
+PASS: x=1 max=6 delta=-5 magnitude=5
+PASS: x=-4 max=-1 delta=-3 magnitude=3
+PASS: x=-2 max=7 delta=-9 magnitude=9
+PASS: x=16 max=32 delta=-16 magnitude=16
+PASS: x=-8 max=24 delta=-32 magnitude=32
+--------------------------------------------
+tb_delta_unit completed: PASS=7 FAIL=0
+--------------------------------------------
+OVERALL RESULT: PASS
