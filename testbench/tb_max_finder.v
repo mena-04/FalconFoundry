@@ -4,16 +4,20 @@
 
 module tb_max_finder;
 
+    // ----------------------------------------------------------------
+    // Testbench signals
+    // ----------------------------------------------------------------
     reg clk;
     reg rst_n;
     reg start;
 
     wire signed [`IN_BITS-1:0] x_in;
-    wire [`INDEX_BITS-1:0] read_addr;
+    wire [`INDEX_BITS-1:0]     read_addr;
     wire signed [`IN_BITS-1:0] max_q;
-    wire busy;
-    wire done;
+    wire                       busy;
+    wire                       done;
 
+    // Simulated input vector buffer
     reg signed [`IN_BITS-1:0] test_vector [0:`VECTOR_LEN-1];
 
     integer pass_count;
@@ -21,13 +25,15 @@ module tb_max_finder;
     integer i;
     integer timeout_count;
 
-    /*
-     * The DUT controls read_addr.
-     * This combinational assignment models the input vector buffer:
-     * whenever read_addr changes, x_in presents that vector element.
-     */
+    // ----------------------------------------------------------------
+    // The DUT generates read_addr.
+    // This assignment emulates the input vector buffer output.
+    // ----------------------------------------------------------------
     assign x_in = test_vector[read_addr];
 
+    // ----------------------------------------------------------------
+    // DUT
+    // ----------------------------------------------------------------
     max_finder dut (
         .clk      (clk),
         .rst_n    (rst_n),
@@ -39,134 +45,183 @@ module tb_max_finder;
         .done     (done)
     );
 
-    // 100 MHz clock: 10 ns period
+    // ----------------------------------------------------------------
+    // Clock: 10 ns period = 100 MHz
+    // ----------------------------------------------------------------
     initial clk = 1'b0;
     always #5 clk = ~clk;
 
+    // ----------------------------------------------------------------
+    // Reset task
+    // ----------------------------------------------------------------
     task automatic reset_dut;
         begin
-            rst_n = 1'b0;
             start = 1'b0;
+            rst_n = 1'b0;
+
             repeat (3) @(posedge clk);
+
             rst_n = 1'b1;
-            @(posedge clk);
+            @(negedge clk);
         end
     endtask
 
+    // ----------------------------------------------------------------
+    // Start pulse task
+    // ----------------------------------------------------------------
     task automatic pulse_start;
         begin
             @(negedge clk);
             start = 1'b1;
+
             @(negedge clk);
             start = 1'b0;
         end
     endtask
 
+    // ----------------------------------------------------------------
+    // Wait until done becomes high.
+    // Sampling is done on the falling edge so that all nonblocking
+    // assignments from the preceding rising edge have settled.
+    // ----------------------------------------------------------------
     task automatic wait_for_done;
+        output reg timed_out;
         begin
             timeout_count = 0;
+            timed_out = 1'b0;
 
             while ((done !== 1'b1) &&
                    (timeout_count < (`VECTOR_LEN + 10))) begin
-                @(posedge clk);
+                @(negedge clk);
                 timeout_count = timeout_count + 1;
             end
 
             if (done !== 1'b1) begin
-                $display("ERROR: Timeout waiting for done.");
-                fail_count = fail_count + 1;
+                timed_out = 1'b1;
             end
         end
     endtask
 
-    task automatic check_result;
+    // ----------------------------------------------------------------
+    // Check one complete vector
+    // ----------------------------------------------------------------
+    task automatic run_test;
         input signed [`IN_BITS-1:0] expected_max;
         input [8*40-1:0] test_name;
+
+        reg timed_out;
         begin
             pulse_start();
-            wait_for_done();
+            wait_for_done(timed_out);
             #1;
 
-            if (done === 1'b1 &&
-                busy === 1'b0 &&
-                max_q === expected_max) begin
+            if (timed_out) begin
+                $display(
+                    "FAIL: %-24s timeout waiting for done",
+                    test_name
+                );
+                fail_count = fail_count + 1;
+            end
+            else if ((busy === 1'b0) &&
+                     (done === 1'b1) &&
+                     (max_q === expected_max)) begin
                 $display(
                     "PASS: %-24s max_q=%0d expected=%0d",
-                    test_name, $signed(max_q), $signed(expected_max)
+                    test_name,
+                    $signed(max_q),
+                    $signed(expected_max)
                 );
                 pass_count = pass_count + 1;
             end
-            else if (done === 1'b1) begin
+            else begin
                 $display(
-                    "FAIL: %-24s max_q=%0d expected=%0d busy=%b done=%b",
-                    test_name, $signed(max_q), $signed(expected_max),
-                    busy, done
+                    "FAIL: %-24s max_q=%0d expected=%0d busy=%b done=%b read_addr=%0d",
+                    test_name,
+                    $signed(max_q),
+                    $signed(expected_max),
+                    busy,
+                    done,
+                    read_addr
                 );
                 fail_count = fail_count + 1;
             end
 
-            // done should be a one-clock pulse.
-            @(posedge clk);
+            // Confirm that done is only a one-clock pulse.
+            @(negedge clk);
             #1;
+
             if (done !== 1'b0) begin
-                $display("FAIL: done did not return low after one clock.");
+                $display(
+                    "FAIL: %-24s done did not return low after one clock",
+                    test_name
+                );
                 fail_count = fail_count + 1;
             end
 
+            // Small idle gap before the next test.
             repeat (2) @(posedge clk);
         end
     endtask
 
+    // ----------------------------------------------------------------
+    // Test sequence
+    // ----------------------------------------------------------------
     initial begin
         pass_count = 0;
         fail_count = 0;
-        rst_n = 1'b0;
-        start = 1'b0;
+        rst_n      = 1'b0;
+        start      = 1'b0;
 
-        // ------------------------------------------------------------
+        // ============================================================
         // Test 1: Increasing values, maximum at the last position
-        // ------------------------------------------------------------
-        for (i = 0; i < `VECTOR_LEN; i = i + 1)
+        // For VECTOR_LEN=8: 1,2,3,4,5,6,7,8
+        // ============================================================
+        for (i = 0; i < `VECTOR_LEN; i = i + 1) begin
             test_vector[i] = i + 1;
+        end
 
         reset_dut();
-        check_result(`VECTOR_LEN, "increasing / max last");
+        run_test(`VECTOR_LEN, "increasing / max last");
 
-        // ------------------------------------------------------------
+        // ============================================================
         // Test 2: Decreasing values, maximum at the first position
-        // ------------------------------------------------------------
-        for (i = 0; i < `VECTOR_LEN; i = i + 1)
+        // For VECTOR_LEN=8: 8,7,6,5,4,3,2,1
+        // ============================================================
+        for (i = 0; i < `VECTOR_LEN; i = i + 1) begin
             test_vector[i] = `VECTOR_LEN - i;
+        end
 
         reset_dut();
-        check_result(`VECTOR_LEN, "decreasing / max first");
+        run_test(`VECTOR_LEN, "decreasing / max first");
 
-        // ------------------------------------------------------------
-        // Test 3: All-negative values
-        // For VECTOR_LEN=8: {-8,-7,-6,-5,-4,-3,-2,-1}
-        // Expected maximum = -1
-        // ------------------------------------------------------------
-        for (i = 0; i < `VECTOR_LEN; i = i + 1)
+        // ============================================================
+        // Test 3: All negative
+        // For VECTOR_LEN=8: -8,-7,-6,-5,-4,-3,-2,-1
+        // ============================================================
+        for (i = 0; i < `VECTOR_LEN; i = i + 1) begin
             test_vector[i] = -`VECTOR_LEN + i;
+        end
 
         reset_dut();
-        check_result(-1, "all negative");
+        run_test(-1, "all negative");
 
-        // ------------------------------------------------------------
+        // ============================================================
         // Test 4: All equal
-        // ------------------------------------------------------------
-        for (i = 0; i < `VECTOR_LEN; i = i + 1)
+        // ============================================================
+        for (i = 0; i < `VECTOR_LEN; i = i + 1) begin
             test_vector[i] = -3;
+        end
 
         reset_dut();
-        check_result(-3, "all equal");
+        run_test(-3, "all equal");
 
-        // ------------------------------------------------------------
+        // ============================================================
         // Test 5: Mixed values, maximum in the middle
-        // Requires VECTOR_LEN >= 8, as used by this project.
-        // ------------------------------------------------------------
-        for (i = 0; i < `VECTOR_LEN; i = i + 1)
+        // Requires VECTOR_LEN >= 8 for this project.
+        // ============================================================
+        for (i = 0; i < `VECTOR_LEN; i = i + 1) begin
             test_vector[i] = 0;
+        end
 
         test_vector[0] =  3;
         test_vector[1] = -2;
@@ -178,29 +233,38 @@ module tb_max_finder;
         test_vector[7] =  2;
 
         reset_dut();
-        check_result(7, "mixed / max middle");
+        run_test(7, "mixed / max middle");
 
-        // ------------------------------------------------------------
-        // Test 6: Duplicate maximum values
-        // ------------------------------------------------------------
-        for (i = 0; i < `VECTOR_LEN; i = i + 1)
+        // ============================================================
+        // Test 6: Duplicate maximum
+        // ============================================================
+        for (i = 0; i < `VECTOR_LEN; i = i + 1) begin
             test_vector[i] = -2;
+        end
 
         test_vector[1] = 6;
         test_vector[5] = 6;
 
         reset_dut();
-        check_result(6, "duplicate maximum");
+        run_test(6, "duplicate maximum");
 
+        // ----------------------------------------------------------------
+        // Final summary
+        // ----------------------------------------------------------------
         $display("--------------------------------------------");
-        $display("tb_max_finder completed: PASS=%0d FAIL=%0d",
-                 pass_count, fail_count);
+        $display(
+            "tb_max_finder completed: PASS=%0d FAIL=%0d",
+            pass_count,
+            fail_count
+        );
         $display("--------------------------------------------");
 
-        if (fail_count == 0)
+        if (fail_count == 0) begin
             $display("OVERALL RESULT: PASS");
-        else
+        end
+        else begin
             $display("OVERALL RESULT: FAIL");
+        end
 
         $finish;
     end
